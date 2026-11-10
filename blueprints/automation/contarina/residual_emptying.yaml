@@ -1,0 +1,110 @@
+blueprint:
+  name: Contarina - residual bin emptying
+  description: >-
+    The evening before the residual waste pickup, asks on your phone whether you
+    are putting the bin out. Tapping the button marks the emptying on the pickup day.
+
+
+    Requires the Contarina integration with emptyings counting turned on (household
+    members set in its options) and the Home Assistant Companion app on the phone.
+  domain: automation
+  source_url: https://github.com/kiren0494/ha-contarina/blob/main/blueprints/automation/contarina/residual_emptying.yaml
+  homeassistant:
+    min_version: 2026.3.0
+  input:
+    calendar:
+      name: Calendar
+      description: The Contarina calendar (its device, e.g. "Contarina Home").
+      selector:
+        device:
+          filter:
+            - integration: contarina
+    notify_device:
+      name: Phone
+      description: The phone that receives the question (Companion app).
+      selector:
+        device:
+          filter:
+            - integration: mobile_app
+    notify_time:
+      name: Time
+      description: When to ask, the evening before the pickup.
+      default: "20:00:00"
+      selector:
+        time: {}
+    title:
+      name: Title
+      default: Waste collection
+      selector:
+        text: {}
+    message:
+      name: Message
+      default: Residual waste pickup tomorrow. Are you putting the bin out?
+      selector:
+        text: {}
+    confirm_text:
+      name: Button text
+      default: "Yes"
+      selector:
+        text: {}
+    wait_hours:
+      name: Answer within
+      description: Hours to wait for the button; after that nothing is marked.
+      default: 10
+      selector:
+        number:
+          min: 1
+          max: 15
+          unit_of_measurement: h
+
+mode: single
+max_exceeded: silent
+
+variables:
+  calendar: !input calendar
+  wait_hours: !input wait_hours
+  # The calendar's residual pickup sensor and its emptyings counter
+  residual: >-
+    {{ expand(device_entities(calendar))
+       | selectattr('attributes.waste', 'eq', 'residual')
+       | map(attribute='entity_id') | first | default('') }}
+  emptyings: >-
+    {{ expand(device_entities(calendar))
+       | selectattr('attributes.emptyings_total', 'defined')
+       | map(attribute='entity_id') | first | default('') }}
+
+triggers:
+  - trigger: time
+    at: !input notify_time
+
+conditions:
+  # The residual waste is collected tomorrow and the counter is on
+  - condition: template
+    value_template: "{{ residual != '' and emptyings != '' and states(residual) == '1' }}"
+
+actions:
+  - variables:
+      action_confirm: "{{ 'CONTARINA_RESIDUAL_' ~ context.id }}"
+      pickup_date: "{{ state_attr(residual, 'next_date') }}"
+  - domain: mobile_app
+    type: notify
+    device_id: !input notify_device
+    title: !input title
+    message: !input message
+    data:
+      actions:
+        - action: "{{ action_confirm }}"
+          title: !input confirm_text
+  - wait_for_trigger:
+      - trigger: event
+        event_type: mobile_app_notification_action
+        event_data:
+          action: "{{ action_confirm }}"
+    timeout:
+      hours: "{{ wait_hours | int }}"
+    continue_on_timeout: false
+  - action: contarina.add_emptying
+    target:
+      entity_id: "{{ emptyings }}"
+    data:
+      date: "{{ pickup_date }}"

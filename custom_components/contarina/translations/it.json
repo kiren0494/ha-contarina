@@ -1,0 +1,359 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "data": {
+                    "municipality": "Comune",
+                    "name": "Rinomina comune",
+                    "ecocenter": "Orari dell'EcoCentro",
+                    "calendar": "Crea un calendario delle raccolte",
+                    "more_options": "Configura le funzioni facoltative"
+                },
+                "data_description": {
+                    "municipality": "Scrivi per cercare il comune che vuoi monitorare.",
+                    "name": "Il nome con cui verrà creato il sensore in Home Assistant.",
+                    "ecocenter": "Aggiunge un sensore che indica se l'EcoCentro del comune è aperto, con gli orari (visibili anche nella card).",
+                    "calendar": "Aggiunge un'entità calendario con un evento per ogni giorno di raccolta, visibile nel calendario di Home Assistant.",
+                    "more_options": "Svuotamenti del secco, pagina nella barra laterale e promemoria, nelle pagine seguenti. Si possono impostare anche dopo da Configura."
+                }
+            },
+            "confirm_duplicate": {
+                "title": "Comune già configurato",
+                "description": "{municipality} è già configurato come {names}. Vuoi aggiungere un altro calendario dello stesso comune, con il nome \"{location}\"?\n\nPremi Invia per aggiungerlo, oppure chiudi questa finestra per annullare."
+            },
+            "emptyings": {
+                "title": "Svuotamenti del secco",
+                "description": "Conta gli svuotamenti del bidone del secco rispetto alla soglia annua.",
+                "data": {
+                    "household_members": "Componenti del nucleo familiare",
+                    "bin_liters": "Capienza bidone del secco (litri)"
+                },
+                "data_description": {
+                    "household_members": "Lascia vuoto per non contare gli svuotamenti. La soglia annua è componenti + 1 svuotamenti da 120 L.",
+                    "bin_liters": "Lo standard è 120 L; con un bidone diverso la soglia viene ricalcolata in proporzione (es. 60 L = il doppio degli svuotamenti)."
+                }
+            },
+            "sidebar": {
+                "title": "Barra laterale",
+                "description": "Una pagina Contarina nella barra laterale di Home Assistant, con le raccolte del mese, la mappa degli EcoCentri e la ricerca rifiuti di tutti i calendari.",
+                "data": {
+                    "panel": "Mostra la pagina Contarina",
+                    "sidebar_pickups": "Mostra le raccolte di domani nella barra laterale"
+                },
+                "data_description": {
+                    "panel": "Compare se almeno un calendario la attiva.",
+                    "sidebar_pickups": "La voce nella barra laterale mostra cosa si raccoglie domani, es. \"Contarina · Umido, Carta\", con l'icona del rifiuto. Attiva anche la pagina."
+                }
+            },
+            "reminders": {
+                "title": "Promemoria delle raccolte",
+                "description": "Come si apre il popup del promemoria (tocca un rifiuto nella card o nella pagina della barra laterale). Vale anche per l'azione contarina.add_reminder senza ora o dispositivo.",
+                "data": {
+                    "reminder_days": "Giorni prima della raccolta",
+                    "reminder_time": "Ora",
+                    "reminder_notify": "Invia a"
+                },
+                "data_description": {
+                    "reminder_days": "0 = il giorno stesso della raccolta: in quel caso l'ora può essere al più tardi le 6:00.",
+                    "reminder_time": "Predefinito: le 20:00 del giorno prima.",
+                    "reminder_notify": "\"Ultimo usato\" ricorda l'ultima scelta fatta nel popup su ogni browser."
+                }
+            }
+        },
+        "error": {
+            "location_in_use": "Esiste già un calendario con questo nome. Inserisci un nome diverso in \"Rinomina comune\".",
+            "unknown_municipality": "Comune non trovato: sceglilo dall'elenco.",
+            "reminder_time_too_late": "Con 0 giorni prima della raccolta l'ora del promemoria deve essere al più tardi le 6:00.",
+            "invalid_reminder_time": "Ora del promemoria non valida."
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "Opzioni",
+                "description": "Scegli cosa modificare.",
+                "menu_options": {
+                    "general": "EcoCentro e calendario",
+                    "emptyings": "Svuotamenti del secco",
+                    "sidebar": "Barra laterale",
+                    "reminders": "Promemoria delle raccolte"
+                }
+            },
+            "general": {
+                "title": "EcoCentro e calendario",
+                "data": {
+                    "ecocenter": "Orari dell'EcoCentro",
+                    "calendar": "Crea un calendario delle raccolte"
+                },
+                "data_description": {
+                    "ecocenter": "Aggiunge un sensore che indica se l'EcoCentro del comune è aperto, con gli orari (visibili anche nella card).",
+                    "calendar": "Aggiunge un'entità calendario con un evento per ogni giorno di raccolta, visibile nel calendario di Home Assistant."
+                }
+            },
+            "emptyings": {
+                "title": "Svuotamenti del secco",
+                "description": "Conta gli svuotamenti del bidone del secco rispetto alla soglia annua.",
+                "data": {
+                    "household_members": "Componenti del nucleo familiare",
+                    "bin_liters": "Capienza bidone del secco (litri)"
+                },
+                "data_description": {
+                    "household_members": "Lascia vuoto per disattivare il conteggio degli svuotamenti. La soglia annua è componenti + 1 svuotamenti da 120 L.",
+                    "bin_liters": "Lo standard è 120 L; con un bidone diverso la soglia viene ricalcolata in proporzione (es. 60 L = il doppio degli svuotamenti)."
+                }
+            },
+            "sidebar": {
+                "title": "Barra laterale",
+                "description": "Una pagina Contarina nella barra laterale di Home Assistant, con le raccolte del mese, la mappa degli EcoCentri e la ricerca rifiuti di tutti i calendari.",
+                "data": {
+                    "panel": "Mostra la pagina Contarina",
+                    "sidebar_pickups": "Mostra le raccolte di domani nella barra laterale"
+                },
+                "data_description": {
+                    "panel": "Compare se almeno un calendario la attiva.",
+                    "sidebar_pickups": "La voce nella barra laterale mostra cosa si raccoglie domani, es. \"Contarina · Umido, Carta\", con l'icona del rifiuto. Attiva anche la pagina."
+                }
+            },
+            "reminders": {
+                "title": "Promemoria delle raccolte",
+                "description": "Come si apre il popup del promemoria (tocca un rifiuto nella card o nella pagina della barra laterale). Vale anche per l'azione contarina.add_reminder senza ora o dispositivo.",
+                "data": {
+                    "reminder_days": "Giorni prima della raccolta",
+                    "reminder_time": "Ora",
+                    "reminder_notify": "Invia a"
+                },
+                "data_description": {
+                    "reminder_days": "0 = il giorno stesso della raccolta: in quel caso l'ora può essere al più tardi le 6:00.",
+                    "reminder_time": "Predefinito: le 20:00 del giorno prima.",
+                    "reminder_notify": "\"Ultimo usato\" ricorda l'ultima scelta fatta nel popup su ogni browser."
+                }
+            }
+        },
+        "error": {
+            "reminder_time_too_late": "Con 0 giorni prima della raccolta l'ora del promemoria deve essere al più tardi le 6:00.",
+            "invalid_reminder_time": "Ora del promemoria non valida."
+        }
+    },
+    "services": {
+        "add_emptying": {
+            "name": "Segna svuotamento",
+            "description": "Segna uno svuotamento del bidone del secco.",
+            "fields": {
+                "date": {
+                    "name": "Data",
+                    "description": "Giorno dello svuotamento (predefinito: oggi)."
+                }
+            }
+        },
+        "remove_emptying": {
+            "name": "Rimuovi svuotamento",
+            "description": "Rimuove uno svuotamento segnato del bidone del secco.",
+            "fields": {
+                "date": {
+                    "name": "Data",
+                    "description": "Giorno dello svuotamento da rimuovere."
+                }
+            }
+        },
+        "search_waste": {
+            "name": "Dove lo butto?",
+            "description": "Cerca nel dizionario dei rifiuti di Contarina (scaricato una volta al giorno) e restituisce i contenitori di ogni voce trovata, con i nomi in inglese se la lingua non è l'italiano.",
+            "fields": {
+                "query": {
+                    "name": "Oggetto",
+                    "description": "Parola da cercare nei nomi degli oggetti, es. \"capsule\"."
+                },
+                "limit": {
+                    "name": "Risultati massimi",
+                    "description": "Quanti oggetti restituire al massimo (predefinito 10)."
+                },
+                "language": {
+                    "name": "Lingua",
+                    "description": "\"it\" per i nomi in italiano, altrimenti in inglese (predefinito: la lingua di Home Assistant)."
+                }
+            }
+        },
+        "add_reminder": {
+            "name": "Aggiungi promemoria raccolta",
+            "description": "Invia una notifica all'ora scelta prima di una raccolta di questo tipo di rifiuto.",
+            "fields": {
+                "at": {
+                    "name": "Quando",
+                    "description": "Quando inviare la notifica: al più tardi alle 6:00 del giorno di raccolta. Predefinito: le impostazioni dei promemoria dell'integrazione (es. le 20:00 del giorno prima)."
+                },
+                "date": {
+                    "name": "Giorno di raccolta",
+                    "description": "Raccolta a cui si riferisce il promemoria (predefinito: la prossima)."
+                },
+                "notify": {
+                    "name": "Servizio di notifica",
+                    "description": "Es. mobile_app_mio_telefono (senza \"notify.\"). Vuoto: notifiche di Home Assistant. Se omesso: il dispositivo scelto nelle impostazioni dell'integrazione."
+                }
+            }
+        },
+        "remove_reminder": {
+            "name": "Rimuovi promemoria raccolta",
+            "description": "Rimuove il promemoria di una raccolta di questo tipo di rifiuto.",
+            "fields": {
+                "date": {
+                    "name": "Giorno di raccolta",
+                    "description": "Raccolta di cui rimuovere il promemoria."
+                }
+            }
+        }
+    },
+    "entity": {
+        "calendar": {
+            "pickups": {
+                "name": "Raccolte"
+            }
+        },
+        "sensor": {
+            "organic": {
+                "name": "Umido"
+            },
+            "paper": {
+                "name": "Carta"
+            },
+            "glass": {
+                "name": "Vetro, plastica, lattine"
+            },
+            "residual": {
+                "name": "Secco"
+            },
+            "garden": {
+                "name": "Vegetale"
+            },
+            "residual_emptyings": {
+                "name": "Svuotamenti secco"
+            },
+            "ecocenter": {
+                "name": "EcoCentro",
+                "state": {
+                    "open": "Aperto",
+                    "booking_only": "Solo su prenotazione",
+                    "closed": "Chiuso"
+                },
+                "state_attributes": {
+                    "address": {
+                        "name": "Indirizzo"
+                    },
+                    "opening_hours": {
+                        "name": "Orari"
+                    },
+                    "open_until": {
+                        "name": "Aperto fino a"
+                    },
+                    "next_opening": {
+                        "name": "Prossima apertura"
+                    },
+                    "note": {
+                        "name": "Nota"
+                    },
+                    "notice": {
+                        "name": "Chiusure"
+                    },
+                    "holidays": {
+                        "name": "Festivi della settimana"
+                    }
+                }
+            },
+            "ecocenter_address": {
+                "name": "EcoCentro {address}",
+                "state": {
+                    "open": "Aperto",
+                    "booking_only": "Solo su prenotazione",
+                    "closed": "Chiuso"
+                },
+                "state_attributes": {
+                    "address": {
+                        "name": "Indirizzo"
+                    },
+                    "opening_hours": {
+                        "name": "Orari"
+                    },
+                    "open_until": {
+                        "name": "Aperto fino a"
+                    },
+                    "next_opening": {
+                        "name": "Prossima apertura"
+                    },
+                    "note": {
+                        "name": "Nota"
+                    },
+                    "notice": {
+                        "name": "Chiusure"
+                    },
+                    "holidays": {
+                        "name": "Festivi della settimana"
+                    }
+                }
+            },
+            "next_pickup": {
+                "name": "Prossima raccolta",
+                "state_attributes": {
+                    "next_date": {
+                        "name": "Data"
+                    },
+                    "days": {
+                        "name": "Giorni mancanti"
+                    },
+                    "waste_types": {
+                        "name": "Rifiuti",
+                        "state": {
+                            "organic": "Umido",
+                            "paper": "Carta",
+                            "glass": "VPL",
+                            "residual": "Secco",
+                            "garden": "Vegetale"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "exceptions": {
+        "not_emptyings_sensor": {
+            "message": "Gli svuotamenti si possono segnare solo sul sensore \"Svuotamenti secco\"."
+        },
+        "search_failed": {
+            "message": "Il dizionario dei rifiuti di Contarina non è raggiungibile. Riprova più tardi."
+        },
+        "not_waste_sensor": {
+            "message": "I promemoria si impostano solo sui sensori dei tipi di rifiuto (es. Umido)."
+        },
+        "no_pickup": {
+            "message": "Non ci sono raccolte in programma per questo tipo di rifiuto."
+        },
+        "not_a_pickup": {
+            "message": "Il {date} non c'è una raccolta di questo tipo di rifiuto."
+        },
+        "reminder_too_late": {
+            "message": "Il promemoria deve essere al più tardi alle {hour} del giorno di raccolta."
+        },
+        "reminder_in_past": {
+            "message": "L'ora del promemoria è già passata."
+        },
+        "notify_not_found": {
+            "message": "{service} non esiste."
+        },
+        "reminder_today": {
+            "message": "Oggi si raccoglie: {waste}."
+        },
+        "reminder_tomorrow": {
+            "message": "Domani si raccoglie: {waste}. Ricordati di esporre il bidone stasera."
+        },
+        "reminder_later": {
+            "message": "Il {date} si raccoglie: {waste}."
+        }
+    },
+    "selector": {
+        "reminder_notify": {
+            "options": {
+                "last_used": "Ultimo usato",
+                "persistent_notification": "Notifiche di Home Assistant",
+                "notify": "Tutti i dispositivi dell'app"
+            }
+        }
+    }
+}

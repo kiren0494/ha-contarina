@@ -1,0 +1,78 @@
+add_emptying:
+  target:
+    entity:
+      integration: contarina
+      domain: sensor
+  fields:
+    date:
+      required: false
+      example: "2026-11-04"
+      selector:
+        date:
+
+remove_emptying:
+  target:
+    entity:
+      integration: contarina
+      domain: sensor
+  fields:
+    date:
+      required: true
+      example: "2026-11-04"
+      selector:
+        date:
+
+search_waste:
+  fields:
+    query:
+      required: true
+      example: "capsule"
+      selector:
+        text:
+    limit:
+      required: false
+      default: 10
+      selector:
+        number:
+          min: 1
+          max: 50
+          mode: box
+    language:
+      required: false
+      example: "en"
+      selector:
+        text:
+
+add_reminder:
+  target:
+    entity:
+      integration: contarina
+      domain: sensor
+  fields:
+    at:
+      required: false
+      example: "2026-09-19 20:00:00"
+      selector:
+        datetime:
+    date:
+      required: false
+      example: "2026-09-20"
+      selector:
+        date:
+    notify:
+      required: false
+      example: "mobile_app_my_phone"
+      selector:
+        text:
+
+remove_reminder:
+  target:
+    entity:
+      integration: contarina
+      domain: sensor
+  fields:
+    date:
+      required: true
+      example: "2026-09-20"
+      selector:
+        date:

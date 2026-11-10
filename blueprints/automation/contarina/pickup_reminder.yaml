@@ -1,0 +1,117 @@
+blueprint:
+  name: Contarina - pickup reminder
+  description: >-
+    Sends a notification to your phone with the waste to put out for the next Contarina
+    pickup, e.g. "Put out: Organic, Paper".
+
+
+    Requires the Contarina integration and the Home Assistant Companion app on the phone.
+  domain: automation
+  source_url: https://github.com/kiren0494/ha-contarina/blob/main/blueprints/automation/contarina/pickup_reminder.yaml
+  homeassistant:
+    min_version: 2026.3.0
+  input:
+    calendar:
+      name: Calendar
+      description: The Contarina calendar (its device, e.g. "Contarina Home").
+      selector:
+        device:
+          filter:
+            - integration: contarina
+    notify_device:
+      name: Phone
+      description: The phone that receives the notification (Companion app).
+      selector:
+        device:
+          filter:
+            - integration: mobile_app
+    when:
+      name: When
+      description: >-
+        The evening before, or the morning of the pickup day. For the pickup day,
+        choose a time before 12:00 (at midday the reminder moves on to the next pickup).
+      default: "1"
+      selector:
+        select:
+          options:
+            - label: The day before
+              value: "1"
+            - label: The pickup day (morning)
+              value: "0"
+    notify_time:
+      name: Time
+      default: "20:00:00"
+      selector:
+        time: {}
+    waste_types:
+      name: Waste types
+      description: Only remind about these types.
+      default: [organic, paper, glass, residual, garden]
+      selector:
+        select:
+          multiple: true
+          options:
+            - label: Organic
+              value: organic
+            - label: Paper
+              value: paper
+            - label: Glass, plastic, cans
+              value: glass
+            - label: Residual
+              value: residual
+            - label: Garden waste
+              value: garden
+    title:
+      name: Title
+      default: Waste collection
+      selector:
+        text: {}
+    message:
+      name: Message
+      description: 'Followed by the waste types, e.g. "Put out: Organic, Paper".'
+      default: "Put out:"
+      selector:
+        text: {}
+
+mode: single
+max_exceeded: silent
+
+variables:
+  calendar: !input calendar
+  when: !input when
+  wanted: !input waste_types
+  message: !input message
+  # The calendar's "Next pickup" sensor: the only one with a waste_types attribute
+  next_pickup: >-
+    {{ expand(device_entities(calendar))
+       | selectattr('attributes.waste_types', 'defined')
+       | map(attribute='entity_id') | first | default('') }}
+  # Translated names of the wanted types, in the order of the sensor state
+  names: >-
+    {% set ns = namespace(out=[]) %}
+    {% if next_pickup %}
+      {% set labels = states(next_pickup).split(', ') %}
+      {% for waste in state_attr(next_pickup, 'waste_types') or [] %}
+        {% if waste in wanted and loop.index0 < labels | count %}
+          {% set ns.out = ns.out + [labels[loop.index0]] %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+    {{ ns.out | join(', ') }}
+
+triggers:
+  - trigger: time
+    at: !input notify_time
+
+conditions:
+  - condition: template
+    value_template: >-
+      {{ next_pickup != '' and names != ''
+         and state_attr(next_pickup, 'days') == when | int }}
+
+actions:
+  - domain: mobile_app
+    type: notify
+    device_id: !input notify_device
+    title: !input title
+    message: "{{ message }} {{ names }}"

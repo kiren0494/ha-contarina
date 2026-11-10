@@ -1,0 +1,359 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "data": {
+                    "municipality": "Municipality",
+                    "name": "Rename municipality",
+                    "ecocenter": "EcoCentro opening hours",
+                    "calendar": "Create a pickups calendar",
+                    "more_options": "Set up the optional features"
+                },
+                "data_description": {
+                    "municipality": "Type to search the municipality you want to track.",
+                    "name": "The name used for the sensors in Home Assistant.",
+                    "ecocenter": "Adds a sensor telling whether the municipality's EcoCentro is open, with its opening hours (also shown on the card).",
+                    "calendar": "Adds a calendar entity with one event per pickup day, shown in the Home Assistant calendar.",
+                    "more_options": "Residual bin emptyings, sidebar page and reminder defaults, on the next pages. They can also be set later from Configure."
+                }
+            },
+            "confirm_duplicate": {
+                "title": "Municipality already configured",
+                "description": "{municipality} is already configured as {names}. Do you want to add another calendar for the same municipality, named \"{location}\"?\n\nSubmit to add it, or close this window to cancel."
+            },
+            "emptyings": {
+                "title": "Residual bin emptyings",
+                "description": "Count the emptyings of the residual waste bin against the yearly allowance.",
+                "data": {
+                    "household_members": "Household members",
+                    "bin_liters": "Residual waste bin size (liters)"
+                },
+                "data_description": {
+                    "household_members": "Leave empty to skip emptyings counting. The yearly allowance is members + 1 emptyings of 120 L.",
+                    "bin_liters": "Standard is 120 L; with a different bin the allowance is rescaled proportionally (e.g. 60 L = twice as many emptyings)."
+                }
+            },
+            "sidebar": {
+                "title": "Sidebar",
+                "description": "A Contarina page in the Home Assistant sidebar, with the month's pickups, the EcoCentri map and the waste search of all the calendars.",
+                "data": {
+                    "panel": "Show the Contarina page",
+                    "sidebar_pickups": "Show tomorrow's pickups in the sidebar"
+                },
+                "data_description": {
+                    "panel": "Shown if at least one calendar turns it on.",
+                    "sidebar_pickups": "The sidebar entry shows what is collected tomorrow, e.g. \"Contarina · Organic, Paper\", with the waste's icon. Also turns the page on."
+                }
+            },
+            "reminders": {
+                "title": "Pickup reminders",
+                "description": "How the reminder popup opens (tap a waste type on the card or the sidebar page). Also used by the contarina.add_reminder action without a time or a device.",
+                "data": {
+                    "reminder_days": "Days before the pickup",
+                    "reminder_time": "Time",
+                    "reminder_notify": "Send to"
+                },
+                "data_description": {
+                    "reminder_days": "0 = on the pickup day itself: then the time can be at the latest 6:00.",
+                    "reminder_time": "Default: 20:00 the day before.",
+                    "reminder_notify": "\"Last used\" remembers the last choice made in the popup on each browser."
+                }
+            }
+        },
+        "error": {
+            "location_in_use": "A calendar with this name already exists. Enter a different name in \"Rename municipality\".",
+            "unknown_municipality": "Municipality not found: pick one from the list.",
+            "reminder_time_too_late": "With 0 days before the pickup the reminder time must be at the latest 6:00.",
+            "invalid_reminder_time": "Invalid reminder time."
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "Options",
+                "description": "Choose what to change.",
+                "menu_options": {
+                    "general": "EcoCentro and calendar",
+                    "emptyings": "Residual bin emptyings",
+                    "sidebar": "Sidebar",
+                    "reminders": "Pickup reminders"
+                }
+            },
+            "general": {
+                "title": "EcoCentro and calendar",
+                "data": {
+                    "ecocenter": "EcoCentro opening hours",
+                    "calendar": "Create a pickups calendar"
+                },
+                "data_description": {
+                    "ecocenter": "Adds a sensor telling whether the municipality's EcoCentro is open, with its opening hours (also shown on the card).",
+                    "calendar": "Adds a calendar entity with one event per pickup day, shown in the Home Assistant calendar."
+                }
+            },
+            "emptyings": {
+                "title": "Residual bin emptyings",
+                "description": "Count the emptyings of the residual waste bin against the yearly allowance.",
+                "data": {
+                    "household_members": "Household members",
+                    "bin_liters": "Residual waste bin size (liters)"
+                },
+                "data_description": {
+                    "household_members": "Leave empty to turn off emptyings counting. The yearly allowance is members + 1 emptyings of 120 L.",
+                    "bin_liters": "Standard is 120 L; with a different bin the allowance is rescaled proportionally (e.g. 60 L = twice as many emptyings)."
+                }
+            },
+            "sidebar": {
+                "title": "Sidebar",
+                "description": "A Contarina page in the Home Assistant sidebar, with the month's pickups, the EcoCentri map and the waste search of all the calendars.",
+                "data": {
+                    "panel": "Show the Contarina page",
+                    "sidebar_pickups": "Show tomorrow's pickups in the sidebar"
+                },
+                "data_description": {
+                    "panel": "Shown if at least one calendar turns it on.",
+                    "sidebar_pickups": "The sidebar entry shows what is collected tomorrow, e.g. \"Contarina · Organic, Paper\", with the waste's icon. Also turns the page on."
+                }
+            },
+            "reminders": {
+                "title": "Pickup reminders",
+                "description": "How the reminder popup opens (tap a waste type on the card or the sidebar page). Also used by the contarina.add_reminder action without a time or a device.",
+                "data": {
+                    "reminder_days": "Days before the pickup",
+                    "reminder_time": "Time",
+                    "reminder_notify": "Send to"
+                },
+                "data_description": {
+                    "reminder_days": "0 = on the pickup day itself: then the time can be at the latest 6:00.",
+                    "reminder_time": "Default: 20:00 the day before.",
+                    "reminder_notify": "\"Last used\" remembers the last choice made in the popup on each browser."
+                }
+            }
+        },
+        "error": {
+            "reminder_time_too_late": "With 0 days before the pickup the reminder time must be at the latest 6:00.",
+            "invalid_reminder_time": "Invalid reminder time."
+        }
+    },
+    "services": {
+        "add_emptying": {
+            "name": "Mark emptying",
+            "description": "Marks an emptying of the residual waste bin.",
+            "fields": {
+                "date": {
+                    "name": "Date",
+                    "description": "Day of the emptying (default: today)."
+                }
+            }
+        },
+        "remove_emptying": {
+            "name": "Remove emptying",
+            "description": "Removes a marked emptying of the residual waste bin.",
+            "fields": {
+                "date": {
+                    "name": "Date",
+                    "description": "Day of the emptying to remove."
+                }
+            }
+        },
+        "search_waste": {
+            "name": "Where does it go?",
+            "description": "Searches the Contarina waste dictionary (downloaded once a day) and returns the containers for each matching item, with the English names when the language isn't Italian.",
+            "fields": {
+                "query": {
+                    "name": "Item",
+                    "description": "Word to look for in the item names, e.g. \"capsule\" or \"battery\"."
+                },
+                "limit": {
+                    "name": "Maximum results",
+                    "description": "How many items to return at most (default 10)."
+                },
+                "language": {
+                    "name": "Language",
+                    "description": "\"it\" for the Italian names, anything else for the English ones (default: the Home Assistant language)."
+                }
+            }
+        },
+        "add_reminder": {
+            "name": "Add pickup reminder",
+            "description": "Sends a notification at the chosen time before a pickup of this waste type.",
+            "fields": {
+                "at": {
+                    "name": "When",
+                    "description": "When to send the notification: at the latest 6:00 on the pickup day. Default: the reminder settings of the integration (e.g. 20:00 the day before)."
+                },
+                "date": {
+                    "name": "Pickup day",
+                    "description": "Pickup the reminder is for (default: the next one)."
+                },
+                "notify": {
+                    "name": "Notify service",
+                    "description": "E.g. mobile_app_my_phone (without \"notify.\"). Empty: Home Assistant notifications. Left out: the device chosen in the integration settings."
+                }
+            }
+        },
+        "remove_reminder": {
+            "name": "Remove pickup reminder",
+            "description": "Removes the reminder of a pickup of this waste type.",
+            "fields": {
+                "date": {
+                    "name": "Pickup day",
+                    "description": "Pickup whose reminder to remove."
+                }
+            }
+        }
+    },
+    "entity": {
+        "calendar": {
+            "pickups": {
+                "name": "Pickups"
+            }
+        },
+        "sensor": {
+            "organic": {
+                "name": "Organic"
+            },
+            "paper": {
+                "name": "Paper"
+            },
+            "glass": {
+                "name": "Glass, plastic, cans"
+            },
+            "residual": {
+                "name": "Residual"
+            },
+            "garden": {
+                "name": "Garden waste"
+            },
+            "residual_emptyings": {
+                "name": "Residual emptyings"
+            },
+            "ecocenter": {
+                "name": "EcoCentro",
+                "state": {
+                    "open": "Open",
+                    "booking_only": "Booking only",
+                    "closed": "Closed"
+                },
+                "state_attributes": {
+                    "address": {
+                        "name": "Address"
+                    },
+                    "opening_hours": {
+                        "name": "Opening hours"
+                    },
+                    "open_until": {
+                        "name": "Open until"
+                    },
+                    "next_opening": {
+                        "name": "Next opening"
+                    },
+                    "note": {
+                        "name": "Note"
+                    },
+                    "notice": {
+                        "name": "Closures"
+                    },
+                    "holidays": {
+                        "name": "Holidays this week"
+                    }
+                }
+            },
+            "ecocenter_address": {
+                "name": "EcoCentro {address}",
+                "state": {
+                    "open": "Open",
+                    "booking_only": "Booking only",
+                    "closed": "Closed"
+                },
+                "state_attributes": {
+                    "address": {
+                        "name": "Address"
+                    },
+                    "opening_hours": {
+                        "name": "Opening hours"
+                    },
+                    "open_until": {
+                        "name": "Open until"
+                    },
+                    "next_opening": {
+                        "name": "Next opening"
+                    },
+                    "note": {
+                        "name": "Note"
+                    },
+                    "notice": {
+                        "name": "Closures"
+                    },
+                    "holidays": {
+                        "name": "Holidays this week"
+                    }
+                }
+            },
+            "next_pickup": {
+                "name": "Next pickup",
+                "state_attributes": {
+                    "next_date": {
+                        "name": "Date"
+                    },
+                    "days": {
+                        "name": "Days left"
+                    },
+                    "waste_types": {
+                        "name": "Waste types",
+                        "state": {
+                            "organic": "Organic",
+                            "paper": "Paper",
+                            "glass": "Glass/plastic/cans",
+                            "residual": "Residual",
+                            "garden": "Garden waste"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "exceptions": {
+        "not_emptyings_sensor": {
+            "message": "Emptyings can only be marked on a \"Residual emptyings\" sensor."
+        },
+        "search_failed": {
+            "message": "The Contarina waste dictionary could not be reached. Try again later."
+        },
+        "not_waste_sensor": {
+            "message": "Reminders can only be set on a waste type sensor (e.g. Organic)."
+        },
+        "no_pickup": {
+            "message": "There is no upcoming pickup of this waste type."
+        },
+        "not_a_pickup": {
+            "message": "There is no pickup of this waste type on {date}."
+        },
+        "reminder_too_late": {
+            "message": "The reminder must be at the latest at {hour} on the pickup day."
+        },
+        "reminder_in_past": {
+            "message": "The reminder time has already passed."
+        },
+        "notify_not_found": {
+            "message": "{service} doesn't exist."
+        },
+        "reminder_today": {
+            "message": "Today: {waste} pickup."
+        },
+        "reminder_tomorrow": {
+            "message": "Tomorrow: {waste} pickup. Remember to put the bin out tonight."
+        },
+        "reminder_later": {
+            "message": "{waste} pickup on {date}."
+        }
+    },
+    "selector": {
+        "reminder_notify": {
+            "options": {
+                "last_used": "Last used",
+                "persistent_notification": "Home Assistant notifications",
+                "notify": "All app devices"
+            }
+        }
+    }
+}

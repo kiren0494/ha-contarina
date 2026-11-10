@@ -1,0 +1,61 @@
+{
+  "entity": {
+    "calendar": {
+      "pickups": {
+        "default": "mdi:calendar-month"
+      }
+    },
+    "sensor": {
+      "organic": {
+        "default": "mdi:food-apple-outline"
+      },
+      "paper": {
+        "default": "mdi:newspaper-variant-outline"
+      },
+      "glass": {
+        "default": "mdi:bottle-soda-classic-outline"
+      },
+      "residual": {
+        "default": "mdi:trash-can-outline"
+      },
+      "garden": {
+        "default": "mdi:leaf"
+      },
+      "residual_emptyings": {
+        "default": "mdi:delete-empty-outline"
+      },
+      "next_pickup": {
+        "default": "mdi:calendar-clock"
+      },
+      "ecocenter": {
+        "default": "mdi:recycle",
+        "state": {
+          "closed": "mdi:store-off-outline"
+        }
+      },
+      "ecocenter_address": {
+        "default": "mdi:recycle",
+        "state": {
+          "closed": "mdi:store-off-outline"
+        }
+      }
+    }
+  },
+  "services": {
+    "add_emptying": {
+      "service": "mdi:delete-empty-outline"
+    },
+    "remove_emptying": {
+      "service": "mdi:delete-restore"
+    },
+    "search_waste": {
+      "service": "mdi:magnify"
+    },
+    "add_reminder": {
+      "service": "mdi:bell-plus-outline"
+    },
+    "remove_reminder": {
+      "service": "mdi:bell-off-outline"
+    }
+  }
+}

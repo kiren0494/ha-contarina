@@ -1,0 +1,14 @@
+{
+  "domain": "contarina",
+  "name": "Contarina",
+  "categories": ["local_services"],
+  "codeowners": ["@kiren0494"],
+  "config_flow": true,
+  "dependencies": ["frontend", "http", "panel_custom", "websocket_api"],
+  "documentation": "https://github.com/kiren0494/ha-contarina",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/kiren0494/ha-contarina/issues",
+  "requirements": [],
+  "version": "1.0.0"
+}
